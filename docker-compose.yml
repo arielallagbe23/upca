@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./upca-back-end
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./upca-front-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
