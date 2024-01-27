@@ -1,23 +1,31 @@
-# Importation des modules nécessaires de SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+import mysql.connector
 
-# Définition de l'URL pour la connexion à la base de données MySQL
-# Format : 'mysql+mysqlconnector://nom_utilisateur:mot_de_passe@hôte:port/nom_base_de_données'
-URL_DATABASE = 'mysql+mysqlconnector://root:root@localhost:8889/PolishCalculator'
+config = {
+    'user': 'root',
+    'password': 'password',
+    'host': 'mysql-db', 
+    'port': 3306,
+    'database': 'PolishCalculator',
+    'raise_on_warnings': True,
+}
 
-# Création d'un moteur SQLAlchemy qui gérera la connexion à la base de données
-engine = create_engine(URL_DATABASE)
+# Connexion à la base de données
+connection = mysql.connector.connect(**config)
 
-# Création d'un sessionmaker qui sera utilisé pour créer des sessions pour interagir avec la base de données
-# autocommit=False : Les transactions ne sont pas validées automatiquement
-# autoflush=False : Les objets ne sont pas écrits automatiquement dans la base de données
-# bind=engine : Association du sessionmaker au moteur de la base de données
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Création d'un curseur pour exécuter des requêtes
+cursor = connection.cursor()
 
-# Création d'une classe de base pour les définitions de classes déclaratives
-# Cette classe de base sera utilisée comme fondation pour vos classes ORM (Object-Relational Mapping)
-Base = declarative_base()
+create_table_query = """
+CREATE TABLE IF NOT EXISTS polishcalculs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    expression VARCHAR(100),
+    result FLOAT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+"""
 
+cursor.execute(create_table_query)
 
+# Fermer le curseur et la connexion
+cursor.close()
+connection.close()

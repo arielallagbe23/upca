@@ -1,5 +1,8 @@
 {
     "[javascriptreact]": {
         "editor.defaultFormatter": "Jota0222.multi-formatter"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }

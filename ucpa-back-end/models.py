@@ -1,17 +1,51 @@
-# Importation des modules SQLAlchemy et datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, func
-from datetime import datetime
-from database import Base  # Importation de la classe de base pour les modèles SQLAlchemy
+import mysql.connector
+from database import config  # Importation des paramètres de connexion depuis database.py
 
 # Définition de la classe de modèle PolishCalcul qui représente une table dans la base de données
-class PolishCalcul(Base):
-    __tablename__ = 'polishcalculs'
+class PolishCalcul:
+    def __init__(self, expression, result):
+        self.expression = expression
+        self.result = result
+        self.timestamp = datetime.now()
 
-    # Définition des colonnes de la table
-    id = Column(Integer, primary_key=True, index=True)  # Clé primaire auto-incrémentée
-    expression = Column(String(100))  # Chaîne de caractères pour stocker l'expression
-    result = Column(Float)  # Valeur flottante pour stocker le résultat du calcul
-    timestamp = Column(DateTime, default=func.now())  # Colonne de date et heure avec la valeur par défaut actuelle
+def create_polishcalcul_table():
+    # Connexion à la base de données avec MySQL Connector
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
 
-# La classe PolishCalcul hérite de la classe Base, définie dans le fichier database.py
-# Cela établit une relation avec le moteur de la base de données et fournit des fonctionnalités de mapping ORM
+    # Exemple de requête pour créer la table (à adapter selon vos besoins)
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS polishcalculs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        expression VARCHAR(100),
+        result FLOAT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    """
+
+    cursor.execute(create_table_query)
+
+    # Valider les changements dans la base de données
+    connection.commit()
+
+    # Fermer le curseur et la connexion
+    cursor.close()
+    connection.close()
+
+def insert_polishcalcul(polish_calcul_instance):
+    # Connexion à la base de données avec MySQL Connector
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
+
+    # Exécution d'une requête SQL pour insérer des données
+    insert_data_query = "INSERT INTO polishcalculs (expression, result, timestamp) VALUES (%s, %s, %s)"
+    data = (polish_calcul_instance.expression, polish_calcul_instance.result, polish_calcul_instance.timestamp)
+
+    cursor.execute(insert_data_query, data)
+
+    # Valider les changements dans la base de données
+    connection.commit()
+
+    # Fermeture le curseur et la connexion
+    cursor.close()
+    connection.close()

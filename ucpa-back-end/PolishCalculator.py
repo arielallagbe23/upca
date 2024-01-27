@@ -28,7 +28,7 @@ class PolishCalculator:
                 # Si le token n'est ni un nombre ni un opérateur, lève une exception
                 print(f"Invalid token: {token}")
                 raise ValueError("Invalid token: {}".format(token))
-        # Vérifie si la pile contient exactement un résultat après l'évaluation
+        #  Vérification si la pile contient exactement un résultat après l'évaluation
         if len(self.stack) == 1:
             final_result = self.stack[0]
             # Vide la pile pour le prochain calcul
@@ -40,7 +40,7 @@ class PolishCalculator:
             raise ValueError("Invalid expression")
 
     def perform_operation(self, operand1, operand2, operator):
-        # Effectue l'opération en fonction de l'opérateur
+        # Realisation l'opération en fonction de l'opérateur
         if operator == '+':
             return operand1 + operand2
         elif operator == '-':
@@ -48,7 +48,7 @@ class PolishCalculator:
         elif operator == '*':
             return operand1 * operand2
         elif operator == '/':
-            # Vérifie si le dénominateur n'est pas zéro pour éviter une division par zéro
+            # Vérification si le dénominateur n'est pas zéro pour éviter une division par zéro
             if operand2 == 0:
                 raise ValueError("Division by zero")
             return operand1 / operand2
