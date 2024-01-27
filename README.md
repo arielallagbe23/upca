@@ -28,7 +28,12 @@ rm -r ucpa-front-end
 git clone https://github.com/arielallagbe23/upca-front-end.git
 ```
 
-5 - Enfin executez cette commande : 
+5 - Crééez une nouvelle base de données grace à votre serveur base de données 
+```bash
+CREATE DATABASE IF NOT EXISTS PolishCalculator;
+```
+
+6 - Enfin executez cette commande : 
 ```bash
 docker compose up
 ```
